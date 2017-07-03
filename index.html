@@ -7,35 +7,21 @@
   <body>
 
     <div class='container'>
-      <div class='map-options'>
-        <h1>Neighborhood Map</h1>
+      <div class='option-head'>
+        <h1>C & S's</br>Neighborhood Map</h1>
         <h3>Our New Home</h3>
+        <p>Franklin, TN</p>
+      </div>
+      <div class='map-options'>
+        <ul class='options'>
+        </ul>
       </div>
     </div>
 
     <div id="map"></div>
 
-
-    <script>
-      var map;
-      function initMap() {
-        var styles = [
-          {
-            featureType: 'water',
-            stylers: [
-              { color: '#003950' }
-            ]
-          }
-        ];
-        // Constructor creates a new map - only center and zoom are required.
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 35.9372555, lng: -86.8104977},
-          zoom: 16,
-          styles: styles,
-        });
-      }
-    </script>
-
+    <!-- Load Scripts -->
+    <script src='js/app.js'></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpIn2miTL77U11TotBEkHXO2ImqSwbEzg&v=3&callback=initMap"></script>
 
   </body>
