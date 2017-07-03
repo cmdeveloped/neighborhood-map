@@ -8,7 +8,8 @@
 
     <div class='container'>
       <div class='map-options'>
-        <h1>New Home</h1>
+        <h1>Neighborhood Map</h1>
+        <h3>Our New Home</h3>
       </div>
     </div>
 
@@ -18,16 +19,24 @@
     <script>
       var map;
       function initMap() {
+        var styles = [
+          {
+            featureType: 'water',
+            stylers: [
+              { color: '#003950' }
+            ]
+          }
+        ];
         // Constructor creates a new map - only center and zoom are required.
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 35.9364123, lng: -86.8096536},
-          zoom: 16
+          center: {lat: 35.9372555, lng: -86.8104977},
+          zoom: 16,
+          styles: styles,
         });
       }
     </script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpIn2miTL77U11TotBEkHXO2ImqSwbEzg&v=3&callback=initMap">
-    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpIn2miTL77U11TotBEkHXO2ImqSwbEzg&v=3&callback=initMap"></script>
 
   </body>
 </html>
