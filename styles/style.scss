@@ -4,7 +4,7 @@ $raleway: 'Raleway', sans-serif;
 
 html, body {
   font-family: $raleway;
-  background: #b2ebf2;
+  background: #042157;
   color: #fff;
   height: 100%;
   margin: 0;
@@ -14,6 +14,10 @@ html, body {
 #map {
   height: 100%;
   color: #455a64;
+}
+#pano {
+  height: 200px;
+  width: 200px;
 }
 
 .container {
