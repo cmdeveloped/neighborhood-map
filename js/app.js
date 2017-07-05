@@ -10,6 +10,7 @@ var url = base_url+endpoint+key;
 
 // Create Model to hold our data
 function ViewModel() {
+  var markers = ko.observableArray();
   var locations = ko.observableArray();
   $.getJSON(url, function( data ) {
     var foursquareLoc = data.response.groups[0].items;
@@ -17,12 +18,20 @@ function ViewModel() {
       var name = foursquareLoc[i].venue.name;
       var lat = foursquareLoc[i].venue.location.lat;
       var lng = foursquareLoc[i].venue.location.lng;
+      var position = {lng, lat};
       var address = foursquareLoc[i].venue.location.formattedAddress;
       var phone = foursquareLoc[i].venue.contact.formattedPhone;
       locations.push([name, lat, lng, address, phone]);
+
+      var marker = new google.maps.Marker({
+        position: position,
+        title: name,
+        animation: google.maps.Animation.DROP,
+        id: i
+      });
+      markers.push(marker);
     }
   })
-  console.log(locations());
 }
 
 
