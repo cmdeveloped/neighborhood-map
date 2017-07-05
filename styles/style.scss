@@ -4,12 +4,12 @@
 $raleway: 'Raleway', sans-serif;
 $lobster: 'Lobster Two', cursive;
 $white: #fff;
-$primary: #042157;
+$primary: #870d4e;
 
 html, body {
   font-family: $raleway;
-  background: #042157;
-  color: #fff;
+  background: $primary;
+  color: $white;
   height: 100%;
   margin: 0;
   padding: 0;
