@@ -9,9 +9,9 @@ var key = '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=' 
 var url = base_url+endpoint+key;
 
 // Create Model to hold our data
-var Model = [
+function ViewModel() {
+  var locations = ko.observableArray();
   $.getJSON(url, function( data ) {
-    var locations = [];
     var foursquareLoc = data.response.groups[0].items;
     for (i = 0; i < foursquareLoc.length; i++) {
       var name = foursquareLoc[i].venue.name;
@@ -22,7 +22,9 @@ var Model = [
       locations.push([name, lat, lng, address, phone]);
     }
   })
-]
+  console.log(locations());
+}
+
 
 //set up map
 function initMap() {
@@ -31,4 +33,6 @@ function initMap() {
       center: new google.maps.LatLng(35.9371347,-86.8095115),
     });
 }
+
 initMap();
+ko.applyBindings(new ViewModel());
