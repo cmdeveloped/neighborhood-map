@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Lobster+Two:400,400i,700,700i');
 
 $raleway: 'Raleway', sans-serif;
+$lobster: 'Lobster Two', cursive;
+$white: #fff;
+$primary: #042157;
 
 html, body {
   font-family: $raleway;
@@ -9,6 +13,11 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  visibility: hidden;
 }
 
 #map {
@@ -25,6 +34,7 @@ html, body {
   width: 25%;
   text-align: center;
   h1 {
+    font-family: $lobster;
     margin-top: 30px;
     margin-bottom: 10px;
   }
@@ -37,5 +47,24 @@ html, body {
     width: 50%;
     border-bottom: 2px solid;
     font-size: 12px;
+  }
+  .map-options {
+    margin-top: 50px;
+    height: 500px;
+    overflow: scroll;
+    .options {
+      padding: 0;
+      background: $white;
+      color: $primary;
+      li {
+        list-style: none;
+        padding: 10px;
+        cursor: pointer;
+      }
+      li:hover {
+        background: $primary;
+        color: $white;
+      }
+    }
   }
 }

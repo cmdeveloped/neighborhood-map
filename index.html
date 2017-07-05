@@ -2,14 +2,24 @@
 <html>
   <head>
     <title>Neighborhood Map</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta charset="utf-8">
+
+    <!-- styles -->
     <link rel="stylesheet" href="styles/style.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyDpIn2miTL77U11TotBEkHXO2ImqSwbEzg&v=3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   </head>
   <body>
 
     <div class='container'>
       <div class='option-head'>
         <h1>C & S's</br>Neighborhood Map</h1>
-        <h3>Food Around Our New Home</h3>
+        <h3>Food Near Our New Home</h3>
         <p>Franklin, TN</p>
       </div>
       <div class='map-options'>
@@ -20,9 +30,8 @@
 
     <div id="map"></div>
 
-    <!-- Load Scripts -->
+
     <script src='js/app.js'></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=drawing,geometry&key=AIzaSyDpIn2miTL77U11TotBEkHXO2ImqSwbEzg&v=3&callback=initMap"></script>
 
   </body>
 </html>
