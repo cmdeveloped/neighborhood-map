@@ -14,7 +14,7 @@ $(document).ready(function() {
   var url = base_url+endpoint+key;
 
 // Foursqure Query to get locations and information back.
-  $.getJSON(url, function( data ) {
+  $.getJSON(url, function getFoursquareData( data ) {
     var foursquareLoc = data.response.groups[0].items;
     for (i = 0; i < foursquareLoc.length; i++) {
       var name = foursquareLoc[i].venue.name;
@@ -43,17 +43,33 @@ $(document).ready(function() {
     self.allVenues = ko.observableArray([]);
 
     self.filter = ko.observable('');
-    self.search = ko.obserable('');
+    self.search = ko.observable('');
+
+    // Call the map in our ViewModel and alert the user if not working properly
+    var map = initMap();
+    self.map = ko.observable(map);
   }
-console.log(Model);
-
-
+  console.log(Model)
+  console.log(Model[0]);
   //set up map
   function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
         center: new google.maps.LatLng(35.9371347,-86.8095115),
       });
+
+    for (var i = 0; i < Model.length; i++) {
+      var latlng = Model[i].position;
+      var name = Model[i].name;
+      var marker = new google.maps.Marker({
+        title: name,
+        position: latlng,
+        map: map,
+        animation: google.maps.Animation.DROP,
+        content: Model.name + Model.address + Model.phone
+      });
+      markers.push(marker);
+    }
   }
   // var marker = new google.maps.Marker({
   //   position: position,
@@ -62,6 +78,5 @@ console.log(Model);
   //   id: i
   // });
   // markers.push(marker);
-  initMap();
-
+  ko.applyBindings(new appViewModel());
 });
