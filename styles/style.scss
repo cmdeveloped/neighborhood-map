@@ -4,7 +4,7 @@
 $raleway: 'Raleway', sans-serif;
 $lobster: 'Lobster Two', cursive;
 $white: #fff;
-$primary: #005f82;
+$primary: #2d4758;
 
 html, body {
   font-family: $raleway;
@@ -22,12 +22,18 @@ html, body {
 
 #map {
   height: 100%;
-  color: #455a64;
+  color: $primary;
+  h4 {
+    color: #3c5f75;
+  }
+  a {
+    color: #3c5f75;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
 }
-#pano {
-  height: 200px;
-  width: 200px;
-}
+
 
 .container {
   float: left;
@@ -53,6 +59,7 @@ html, body {
     height: 500px;
     overflow: scroll;
     .options {
+      margin: 0;
       padding: 0;
       background: $white;
       color: $primary;

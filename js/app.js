@@ -13,7 +13,7 @@ $(document).ready(function() {
   var client_id = 'NLIDKGASYMRAYLQE0CTQ3G2HRTWOV1CR1RIBMQF4YJMINVSP';
   var client_secret = 'UK1CHDNC5EE35T3YLHMJDI3IEXAGSMADSR35BAOK3HXULCAU';
   var base_url = 'https://api.foursquare.com/v2/';
-  var endpoint = 'venues/explore?&near=200+Resource+Parkway+Franklin+TN&section=food&limit=30';
+  var endpoint = 'venues/explore?&near=200+Resource+Parkway+Franklin+TN&query=sushi&limit=30';
   var key = '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=' + '20170704';
   var url = base_url+endpoint+key;
 
@@ -53,6 +53,7 @@ $(document).ready(function() {
     })
   }
 
+
   //  Set  up our map
   function initMap() {
 
@@ -64,19 +65,43 @@ $(document).ready(function() {
         center: new google.maps.LatLng(35.9371347,-86.8095115),
       });
 
+    var infoWindow = new google.maps.InfoWindow();
+    var bounds = new google.maps.LatLngBounds();
+
     for (var i = 0; i < Model.length; i++) {
       var latlng = Model[i].position;
       var name = Model[i].name;
+      var address = Model[i].address;
+      var phone = Model[i].phone;
       var marker = new google.maps.Marker({
         title: name,
         position: latlng,
         map: map,
         animation: google.maps.Animation.DROP,
-        content: Model.name + Model.address + Model.phone
+        content: '<h2 style="margin-bottom: 0;">' + name + '</h2><h4>' + address[0] + '</br>' + address[1] + '</br>' + address[2] + '</h4><a href="tel:"' + phone + '">' + phone + '</a>'
       });
+      bounds.extend(Model[i].position);
       markers.push(marker);
+      marker.addListener('click', function() {
+        populateInfoWindow(this, infoWindow);
+      });
+    }
+    map.fitBounds(bounds);
+  }
+
+
+  // Function populates the infowindow for when a marker on the map is interacted
+  function populateInfoWindow(marker, infowindow) {
+    if (infowindow.marker != marker) {
+      infowindow.marker = marker;
+      infowindow.setContent(marker.content);
+      infowindow.open(map, marker);
+      infowindow.addListener('closeclick', function() {
+        infowindow.marker = null;
+      });
     }
   }
+
 
   // Call ViewModel to update the View
   ko.applyBindings(new appViewModel());
