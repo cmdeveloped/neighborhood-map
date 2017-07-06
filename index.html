@@ -23,7 +23,10 @@
         <p>Franklin, TN</p>
       </div>
       <div class='map-options'>
-        <ul class='options'>
+        <ul class='options' data-bind="foreach: allVenues">
+          <li>
+            <span data-bind='text: name'></span>
+          </li>
         </ul>
       </div>
     </div>
