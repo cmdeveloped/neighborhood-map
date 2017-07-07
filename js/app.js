@@ -15,6 +15,7 @@ $(document).ready(function() {
     var self = this;
 
     self.food = ['Pizza', 'American', 'Sushi', 'Mexican', 'Italian', 'Steak'];
+
     self.allVenues = ko.observableArray([]);
     self.markers = ko.observableArray([]);
 
@@ -71,6 +72,8 @@ $(document).ready(function() {
         initMap(false, markers);
       }
 
+    // Push each item in Model to the allVenues array
+      allVenues.removeAll();
       Model.forEach((item) => {
         allVenues.push(item);
       });
@@ -87,7 +90,7 @@ $(document).ready(function() {
 
 
 //  Set  up our map markers and extend bounds
-  function initMap(init, markers) {
+  function initMap(init, markers, allVenues) {
     if (init) {
       buildMap();
     }
