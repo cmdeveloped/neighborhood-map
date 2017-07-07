@@ -14,11 +14,11 @@ $(document).ready(function() {
   var appViewModel = function() {
 
     var self = this;
-    self.food = ['Pizza', 'American', 'Sushi', 'Mexican', 'Italian', 'Steak'];
+    self.food = ['Pizza', 'Burgers', 'Seafood', 'Sushi', 'Mexican', 'Italian', 'Steak'];
     self.allVenues = ko.observableArray([]);
     self.markers = ko.observableArray([]);
     self.filter = ko.observable('');
-    self.foodChoice = ko.observable('Pizza');
+    self.foodChoice = ko.observable('Food');
     self.foodChoice.subscribe(function(newValue) {
       updateMap(self.foodChoice, self.allVenues, true, self.markers);
     });
@@ -55,12 +55,14 @@ $(document).ready(function() {
         var position = {lng, lat};
         var address = foursquareLoc[i].venue.location.formattedAddress;
         var phone = foursquareLoc[i].venue.contact.formattedPhone;
+        var rating = foursquareLoc[i].venue.rating;
       // Push our items returned to the model
         Model.push({
           name: name,
           position: position,
           address: address,
-          phone: phone
+          phone: phone,
+          rating: rating
         });
       }
 
@@ -110,13 +112,14 @@ $(document).ready(function() {
       var name = Model[i].name;
       var address = Model[i].address;
       var phone = Model[i].phone;
+      var rating = Model[i].rating;
       var marker = new google.maps.Marker({
         title: name,
         position: latlng,
         map: map,
         animation: google.maps.Animation.DROP,
         icon: defaultIcon,
-        content: '<h2 style="margin-bottom: 0;">' + name + '</h2><h4>' + address[0] + '</br>' + address[1] + '</br>' + address[2] + '</h4><a href="tel:"' + phone + '">' + phone + '</a>'
+        content: '<h2 style="margin-bottom: 0;">' + name + '</h2><h4>' + address[0] + '</br>' + address[1] + '</br>' + address[2] + '</h4><p style="font-weight: bold;">' + rating + '/10 Rating</p><a href="tel:"' + phone + '">' + phone + '</a>'
       });
       bounds.extend(Model[i].position);
       markers.push(marker);
