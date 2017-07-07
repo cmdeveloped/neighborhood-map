@@ -7,7 +7,7 @@
 
     <!-- styles -->
     <link rel="stylesheet" href="styles/style.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -22,6 +22,10 @@
         <h3>Food Near Our New Home</h3>
         <p>Franklin, TN</p>
       </div>
+      <select data-bind='options: food,
+                     optionsCaption: "Choose a food choice!",
+                     value: foodChoice'>
+      </select>
       <div class='map-options'>
         <ul class='options' data-bind="foreach: allVenues">
           <li>

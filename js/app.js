@@ -1,21 +1,12 @@
 $(document).ready(function() {
 
-  // Global variables
+// Global variables
   var self = this;
   var map, infoWindow;
 
-  // Creating our Knckout Model
-  // Model holds all locations info( name, position, address, phone )
+// Creating our Knckout Model
+// Model holds all locations info( name, position, address, phone )
   var Model = [];
-
-  // Provide client id, client secret, and set up foursquare api
-  // Foursqure Api necessities
-  var client_id = 'NLIDKGASYMRAYLQE0CTQ3G2HRTWOV1CR1RIBMQF4YJMINVSP';
-  var client_secret = 'UK1CHDNC5EE35T3YLHMJDI3IEXAGSMADSR35BAOK3HXULCAU';
-  var base_url = 'https://api.foursquare.com/v2/';
-  var endpoint = 'venues/explore?&near=200+Resource+Parkway+Franklin+TN&query=sushi&limit=30';
-  var key = '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=' + '20170704';
-  var url = base_url+endpoint+key;
 
 
 // Creating our Knockout ViewModel
@@ -23,21 +14,48 @@ $(document).ready(function() {
 
     var self = this;
 
+    self.food = ['Pizza', 'American', 'Sushi', 'Mexican', 'Italian', 'Steak'];
     self.allVenues = ko.observableArray([]);
+    self.markers = ko.observableArray([]);
 
     self.filter = ko.observable('');
-    self.search = ko.observable('');
+    self.foodChoice = ko.observable('Pizza');
+    self.foodChoice.subscribe(function(newValue) {
+      updateMap(self.foodChoice, self.allVenues, true, self.markers);
+    });
+    updateMap(self.foodChoice, self.allVenues, false, self.markers);
+  }
 
-    // AJAX request from foursquare to populate our Model
-    $.getJSON(url, function getFoursquareData( data ) {
+
+// Updating our map with markers and locations from the model
+// We are fetching data based on the user's food selection in the DOM
+  var updateMap = function(foodChoice, allVenues, init, markers) {
+
+  // Provide client id, client secret, and set up foursquare api
+  // Foursqure Api necessities
+    var client_id = 'NLIDKGASYMRAYLQE0CTQ3G2HRTWOV1CR1RIBMQF4YJMINVSP';
+    var client_secret = 'UK1CHDNC5EE35T3YLHMJDI3IEXAGSMADSR35BAOK3HXULCAU';
+    var base_url = 'https://api.foursquare.com/v2/';
+    var endpoint = 'venues/explore?&near=200+Resource+Parkway+Franklin+TN&query=' + foodChoice() + '&limit=20';
+    var key = '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=' + '20170704';
+    var url = base_url+endpoint+key;
+
+  // AJAX request from foursquare to populate our Model
+    $.getJSON(url, function( data ) {
+
+      Model = [];
       var foursquareLoc = data.response.groups[0].items;
+
+    // Loop through the foursquare data and push each item into the Model
       for (i = 0; i < foursquareLoc.length; i++) {
+      // Store our data variables for later use
         var name = foursquareLoc[i].venue.name;
         var lat = foursquareLoc[i].venue.location.lat;
         var lng = foursquareLoc[i].venue.location.lng;
         var position = {lng, lat};
         var address = foursquareLoc[i].venue.location.formattedAddress;
         var phone = foursquareLoc[i].venue.contact.formattedPhone;
+      // Push our items returned to the model
         Model.push({
           name: name,
           position: position,
@@ -45,25 +63,40 @@ $(document).ready(function() {
           phone: phone
         });
       }
-      var map = initMap();
-      self.map = ko.observable(map);
+
+      if (!init) {
+        var map = initMap(true, markers);
+        self.map = ko.observable(map);
+      } else {
+        initMap(false, markers);
+      }
+
       Model.forEach((item) => {
-        self.allVenues.push(item);
+        allVenues.push(item);
       });
     })
   }
 
-
-  //  Set  up our map
-  function initMap() {
-
-    var self = this;
-    self.markers = ko.observableArray([]);
-
+// Build our map in the view
+  var buildMap = function() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
         center: new google.maps.LatLng(35.9371347,-86.8095115),
       });
+  }
+
+
+//  Set  up our map markers and extend bounds
+  function initMap(init, markers) {
+    if (init) {
+      buildMap();
+    }
+    var self = this;
+
+  // Set our markers to null each time
+    for (var i = 0; i < markers().length; i++) {
+        markers()[i].setMap(null);
+    }
 
     var infoWindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();

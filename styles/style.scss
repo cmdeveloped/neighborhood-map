@@ -7,9 +7,6 @@ $white: #fff;
 $primary: #2d4758;
 
 html, body {
-  font-family: $raleway;
-  background: $primary;
-  color: $white;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -21,9 +18,14 @@ html, body {
 }
 
 #map {
+  width: 70%;
   height: 100%;
   color: $primary;
+  h2 {
+    font-size: 22px;
+  }
   h4 {
+    font-size: 12px;
     color: #3c5f75;
   }
   a {
@@ -37,8 +39,12 @@ html, body {
 
 .container {
   float: left;
-  width: 25%;
+  height: 100%;
+  width: 30% !important;
   text-align: center;
+  font-family: $raleway;
+  background: $primary;
+  color: $white;
   h1 {
     font-family: $lobster;
     margin-top: 30px;
@@ -54,8 +60,15 @@ html, body {
     border-bottom: 2px solid;
     font-size: 12px;
   }
+  select {
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    margin-top: 25px;
+    color: $primary;
+  }
   .map-options {
-    margin-top: 50px;
+    margin-top: 15px;
     height: 500px;
     overflow: scroll;
     .options {
