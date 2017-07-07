@@ -61,15 +61,23 @@ html, body {
     font-size: 12px;
   }
   select {
-    text-align: center;
     width: 100%;
     padding: 10px;
-    margin-top: 25px;
+    margin-top: 15px;
+    color: $primary;
+    option {
+      padding: 10px;
+    }
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
     color: $primary;
   }
   .map-options {
     margin-top: 15px;
-    height: 500px;
+    height: 50%;
     overflow: scroll;
     .options {
       margin: 0;
