@@ -4,6 +4,7 @@ $(document).ready(function() {
   var self = this;
   var map, infoWindow;
 
+
 // Creating our Knckout Model
 // Model holds all locations info( name, position, address, phone )
   var Model = [];
@@ -13,18 +14,16 @@ $(document).ready(function() {
   var appViewModel = function() {
 
     var self = this;
-
     self.food = ['Pizza', 'American', 'Sushi', 'Mexican', 'Italian', 'Steak'];
-
     self.allVenues = ko.observableArray([]);
     self.markers = ko.observableArray([]);
-
     self.filter = ko.observable('');
     self.foodChoice = ko.observable('Pizza');
     self.foodChoice.subscribe(function(newValue) {
       updateMap(self.foodChoice, self.allVenues, true, self.markers);
     });
     updateMap(self.foodChoice, self.allVenues, false, self.markers);
+
   }
 
 
@@ -80,6 +79,7 @@ $(document).ready(function() {
     })
   }
 
+
 // Build our map in the view
   var buildMap = function() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -94,7 +94,6 @@ $(document).ready(function() {
     if (init) {
       buildMap();
     }
-    var self = this;
 
   // Set our markers to null each time
     for (var i = 0; i < markers().length; i++) {
@@ -103,6 +102,8 @@ $(document).ready(function() {
 
     var infoWindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();
+    var defaultIcon = makeDefaultIcon();
+    var focusIcon = makeFocusIcon();
 
     for (var i = 0; i < Model.length; i++) {
       var latlng = Model[i].position;
@@ -114,6 +115,7 @@ $(document).ready(function() {
         position: latlng,
         map: map,
         animation: google.maps.Animation.DROP,
+        icon: defaultIcon,
         content: '<h2 style="margin-bottom: 0;">' + name + '</h2><h4>' + address[0] + '</br>' + address[1] + '</br>' + address[2] + '</h4><a href="tel:"' + phone + '">' + phone + '</a>'
       });
       bounds.extend(Model[i].position);
@@ -121,8 +123,35 @@ $(document).ready(function() {
       marker.addListener('click', function() {
         populateInfoWindow(this, infoWindow);
       });
+      marker.addListener('mouseover', function() {
+        this.setIcon(focusIcon);
+      });
+      marker.addListener('mouseout', function() {
+        this.setIcon(defaultIcon);
+      });
     }
     map.fitBounds(bounds);
+  }
+
+
+  // Function to create custom marker icons
+  function makeDefaultIcon() {
+    var markerImage = new google.maps.MarkerImage(
+      'images/gmmd.svg',
+      new google.maps.Size(40, 40),
+      new google.maps.Point(0, 0),
+      new google.maps.Point(10, 34),
+      new google.maps.Size(40, 40));
+    return markerImage;
+  }
+  function makeFocusIcon() {
+    var markerImage = new google.maps.MarkerImage(
+      'images/gmmf.svg',
+      new google.maps.Size(40, 40),
+      new google.maps.Point(0, 0),
+      new google.maps.Point(10, 34),
+      new google.maps.Size(40, 40));
+    return markerImage;
   }
 
 
