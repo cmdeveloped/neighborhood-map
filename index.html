@@ -30,7 +30,7 @@
       <div class='map-options'>
         <ul class='options' data-bind="foreach: allVenues">
           <li>
-            <span data-bind='text: name'></span>
+            <span data-bind='text: name, click: $parent.listClick'></span>
           </li>
         </ul>
       </div>

@@ -24,6 +24,11 @@ $(document).ready(function() {
     });
     updateMap(self.foodChoice, self.allVenues, false, self.markers);
 
+    self.listClick = function(data) {
+      var listItem = data.name;
+      console.log(listItem);
+    }
+
   }
 
 
