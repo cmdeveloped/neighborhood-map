@@ -18,7 +18,7 @@ $(document).ready(function() {
     self.allVenues = ko.observableArray([]);
     self.markers = ko.observableArray([]);
     self.filter = ko.observable('');
-    self.foodChoice = ko.observable('Food');
+    self.foodChoice = ko.observable('food');
     self.foodChoice.subscribe(function(newValue) {
       updateMap(self.foodChoice, self.allVenues, true, self.markers);
     });
@@ -101,7 +101,6 @@ $(document).ready(function() {
     for (var i = 0; i < markers().length; i++) {
         markers()[i].setMap(null);
     }
-
     var infoWindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();
     var defaultIcon = makeDefaultIcon();
@@ -132,8 +131,8 @@ $(document).ready(function() {
       marker.addListener('mouseout', function() {
         this.setIcon(defaultIcon);
       });
+      map.fitBounds(bounds);
     }
-    map.fitBounds(bounds);
   }
 
 
