@@ -10,31 +10,61 @@ $(document).ready(function() {
   var Model = [];
 
 
+
 // Creating our Knockout ViewModel
   var appViewModel = function() {
 
     var self = this;
-    self.food = ['Pizza', 'Burgers', 'Seafood', 'Sushi', 'Mexican', 'Italian', 'Steak'];
-    self.allVenues = ko.observableArray([]);
+
+    var infoWindow = new google.maps.InfoWindow();
+
+    self.allVenues = ko.observableArray();
+    self.filteredVenues = ko.observableArray();
     self.markers = ko.observableArray([]);
     self.filter = ko.observable('');
-    self.foodChoice = ko.observable('food');
-    self.foodChoice.subscribe(function(newValue) {
-      updateMap(self.foodChoice, self.allVenues, true, self.markers);
+    self.allVenues.subscribe(function(newValue) {
+      filterFunction(self.filter(), self.allVenues, self.filteredVenues, self.markers)
     });
-    updateMap(self.foodChoice, self.allVenues, false, self.markers);
+    self.filter.subscribe(function(newValue) {
+      filterFunction(newValue, self.allVenues, self.filteredVenues, self.markers);
+    });
 
-    self.listClick = function(data) {
-      var listItem = data.name;
-      console.log(listItem);
+    // Observables for food choices
+    self.food = ['Pizza', 'Burgers', 'Seafood', 'Sushi', 'Mexican', 'Italian', 'Steak'];
+    self.foodChoice = ko.observable('Pizza');
+    self.foodChoice.subscribe(function(newValue) {
+      updateMap(self.foodChoice, self.allVenues, true, self.markers, infoWindow);
+    });
+    updateMap(self.foodChoice, self.allVenues, false, self.markers, infoWindow);
+
+  // Populate the marker of the Venue selected from the list
+    self.populateInfoFromItem = function(item) {
+      var marker = self.markers().find((mk) => {
+        return mk.title === item.name;
+      });
+      populateInfoWindow(marker, infoWindow)
     }
-
   }
+
+
+
+// Filter the list of venues in the DOM into a new observableArray
+  var filterFunction = function(term, allVenues, filteredVenues, markers) {
+    term = term.toUpperCase();
+    let tempArray = allVenues().filter((item) => {
+      return term ? (item.name.toUpperCase()).indexOf(term) > -1 : true;
+    });
+    filteredVenues.removeAll();
+    tempArray.forEach((item) => {
+      filteredVenues.push(item);
+    });
+  }
+
 
 
 // Updating our map with markers and locations from the model
 // We are fetching data based on the user's food selection in the DOM
-  var updateMap = function(foodChoice, allVenues, init, markers) {
+  var updateMap = function(foodChoice, allVenues, init, markers, infoWindow) {
 
   // Provide client id, client secret, and set up foursquare api
   // Foursqure Api necessities
@@ -72,18 +102,23 @@ $(document).ready(function() {
       }
 
       if (!init) {
-        var map = initMap(true, markers);
-        self.map = ko.observable(map);
+        var map = initMap(true, markers, infoWindow);
       } else {
-        initMap(false, markers);
+        initMap(false, markers, infoWindow);
       }
 
-    // Push each item in Model to the allVenues array
+    // Push each item in Model to the allVenues array and remove after each food choice chosen
       allVenues.removeAll();
+      Model = Model.sort(function(a, b) {
+        return a.name > b.name ? 1 : -1;
+      });
       Model.forEach((item) => {
         allVenues.push(item);
       });
-    })
+  // Alert fail if data is unable to be retrieved from foursquare
+    }).fail(function () {
+      alert("Data failed to retrieve!");
+    });
   }
 
 
@@ -97,7 +132,7 @@ $(document).ready(function() {
 
 
 //  Set  up our map markers and extend bounds
-  function initMap(init, markers, allVenues) {
+  function initMap(init, markers, infoWindow) {
     if (init) {
       buildMap();
     }
@@ -106,7 +141,6 @@ $(document).ready(function() {
     for (var i = 0; i < markers().length; i++) {
         markers()[i].setMap(null);
     }
-    var infoWindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();
     var defaultIcon = makeDefaultIcon();
     var focusIcon = makeFocusIcon();
@@ -127,6 +161,8 @@ $(document).ready(function() {
       });
       bounds.extend(Model[i].position);
       markers.push(marker);
+
+      // TODO: Make this functionality occur when a list name is clicked
       marker.addListener('click', function() {
         populateInfoWindow(this, infoWindow);
       });
@@ -141,7 +177,7 @@ $(document).ready(function() {
   }
 
 
-  // Function to create custom marker icons
+  // Functions to create custom marker icons
   function makeDefaultIcon() {
     var markerImage = new google.maps.MarkerImage(
       'images/gmmd.svg',
@@ -161,9 +197,9 @@ $(document).ready(function() {
     return markerImage;
   }
 
-
   // Function populates the infowindow for when a marker on the map is interacted
   function populateInfoWindow(marker, infowindow) {
+    infowindow.marker = null;
     if (infowindow.marker != marker) {
       infowindow.marker = marker;
       infowindow.setContent(marker.content);
