@@ -22,7 +22,7 @@ $(document).ready(function() {
     self.markers = ko.observableArray([]);
     self.filter = ko.observable('');
     self.allVenues.subscribe(function(newValue) {
-      filterFunction(self.filter(), self.allVenues, self.filteredVenues, self.markers)
+      filterFunction(self.filter(), self.allVenues, self.filteredVenues, self.markers);
     });
     self.filter.subscribe(function(newValue) {
       filterFunction(newValue, self.allVenues, self.filteredVenues, self.markers);
@@ -41,9 +41,9 @@ $(document).ready(function() {
       var marker = self.markers().find((mk) => {
         return mk.title === item.name;
       });
-      populateInfoWindow(marker, infoWindow)
-    }
-  }
+      populateInfoWindow(marker, infoWindow);
+    };
+  };
 
 
 
@@ -57,7 +57,7 @@ $(document).ready(function() {
     tempArray.forEach((item) => {
       filteredVenues.push(item);
     });
-  }
+  };
 
 
 
@@ -118,7 +118,7 @@ $(document).ready(function() {
     }).fail(function () {
       alert("Data failed to retrieve!");
     });
-  }
+  };
 
 
 // Build our map in the view
@@ -127,7 +127,7 @@ $(document).ready(function() {
         zoom: 15,
         center: new google.maps.LatLng(35.9371347,-86.8095115),
       });
-  }
+  };
 
 
 //  Set  up our map markers and extend bounds
@@ -137,9 +137,10 @@ $(document).ready(function() {
     }
 
   // Set our markers to null each time choice is made to clear markers
-    for (var i = 0; i < markers().length; i++) {
-        markers()[i].setMap(null);
+    for (var m = 0; m < markers().length; m++) {
+        markers()[m].setMap(null);
     }
+
   // Variables to create styled markers and extend map bounds
     var bounds = new google.maps.LatLngBounds();
     var defaultIcon = makeDefaultIcon();
@@ -162,7 +163,8 @@ $(document).ready(function() {
       });
       bounds.extend(Model[i].position);
       markers.push(marker);
-
+      map.fitBounds(bounds);
+    }
     // Add event listeners for when markers are either clicked or focused on
       marker.addListener('click', function() {
         populateInfoWindow(this, infoWindow);
@@ -173,8 +175,6 @@ $(document).ready(function() {
       marker.addListener('mouseout', function() {
         this.setIcon(defaultIcon);
       });
-      map.fitBounds(bounds);
-    }
   }
 
 
