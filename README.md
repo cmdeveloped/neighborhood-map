@@ -1,6 +1,6 @@
 # Udacity Neighborhood Map Application
 
-This is a single page application featuring a map of my new neighborhood in Franklin, TN. The map include highlighted food locations around the area using third-party JSON data from Foursquare. Data for the application includes the name, address, restaurant rating, and phone number of the location.
+This is a single page application featuring a map of my new neighborhood in Franklin, TN. The map includes highlighted food locations around the area using third-party JSON data from Foursquare and displaying it using Google Maps. Data for the application includes the name, address, restaurant rating, and phone number of the location.
 
 ### Why this project?
 
