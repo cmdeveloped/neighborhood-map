@@ -10,7 +10,6 @@ $(document).ready(function() {
   var Model = [];
 
 
-
 // Creating our Knockout ViewModel
   var appViewModel = function() {
 
@@ -137,14 +136,16 @@ $(document).ready(function() {
       buildMap();
     }
 
-  // Set our markers to null each time
+  // Set our markers to null each time choice is made to clear markers
     for (var i = 0; i < markers().length; i++) {
         markers()[i].setMap(null);
     }
+  // Variables to create styled markers and extend map bounds
     var bounds = new google.maps.LatLngBounds();
     var defaultIcon = makeDefaultIcon();
     var focusIcon = makeFocusIcon();
 
+  // Loop through the model and set Marker properties and info window content
     for (var i = 0; i < Model.length; i++) {
       var latlng = Model[i].position;
       var name = Model[i].name;
@@ -162,7 +163,7 @@ $(document).ready(function() {
       bounds.extend(Model[i].position);
       markers.push(marker);
 
-      // TODO: Make this functionality occur when a list name is clicked
+    // Add event listeners for when markers are either clicked or focused on
       marker.addListener('click', function() {
         populateInfoWindow(this, infoWindow);
       });
