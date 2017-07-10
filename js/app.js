@@ -43,6 +43,7 @@ $(document).ready(function() {
       });
       populateInfoWindow(marker, infoWindow);
     };
+
   };
 
 
@@ -163,18 +164,18 @@ $(document).ready(function() {
       });
       bounds.extend(Model[i].position);
       markers.push(marker);
+      // Add event listeners for when markers are either clicked or focused on
+        marker.addListener('click', function() {
+          populateInfoWindow(this, infoWindow);
+        });
+        marker.addListener('mouseover', function() {
+          this.setIcon(focusIcon);
+        });
+        marker.addListener('mouseout', function() {
+          this.setIcon(defaultIcon);
+        });
       map.fitBounds(bounds);
     }
-    // Add event listeners for when markers are either clicked or focused on
-      // marker.addListener('click', function() {
-      //   populateInfoWindow(this, infoWindow);
-      // });
-      // marker.addListener('mouseover', function() {
-      //   this.setIcon(focusIcon);
-      // });
-      // marker.addListener('mouseout', function() {
-      //   this.setIcon(defaultIcon);
-      // });
   }
 
 
