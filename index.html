@@ -15,31 +15,33 @@
     <script src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyDpIn2miTL77U11TotBEkHXO2ImqSwbEzg&v=3"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   </head>
-  <body>
+  <body class='container'>
 
-    <div class='container'>
-      <div class='option-head'>
-        <h1>C & S's</br>Neighborhood Map</h1>
-        <h3>Food Near Our New Home</h3>
-        <p>Franklin, TN</p>
-      </div>
+    <div class='option-head'>
+      <h1>C & S's</br>Neighborhood Map</h1>
+      <h3>Food Near Our New Home</h3>
+      <p>Franklin, TN</p>
+    </div>
+    <section class="row">
       <!-- Knockout data-bind for selection of food choices -->
-      <select data-bind='options: food,
+      <select class="col-md-6" data-bind='options: food,
                          optionsCaption: "Choose a food choice!",
                          value: foodChoice'>
       </select>
-      <input type='text' placeholder='Filter locations list!' data-bind="textInput: filter">
-      <!-- Go through our filtered venues observable array and list data -->
-      <div class='map-options'>
+      <input class='col-md-6' type='text' placeholder='Filter locations list!' data-bind="textInput: filter">
+    </section>
+    <section class="row">
+    <!-- Go through our filtered venues observable array and list data -->
+      <div class='col-md-12 map-options'>
         <ul class='options' data-bind="foreach: filteredVenues">
           <li data-bind="click: $parent.populateInfoFromItem">
             <span data-bind='text: name'></span>
           </li>
         </ul>
       </div>
-    </div>
+    </section>
 
-    <div id="map"></div>
+    <div class="row" id="map"></div>
 
   </body>
 </html>
