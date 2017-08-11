@@ -207,9 +207,12 @@ $(document).ready(function() {
       infowindow.open(map, marker);
       marker.setIcon(focusIcon);
       infowindow.addListener('closeclick', function() {
+        marker.setIcon(defaultIcon);
         infowindow.marker = null;
       });
     }
+    // Set marker back to default after 3 seconds
+    setTimeout(function() { marker.setIcon(defaultIcon)}, 3000);
   }
 
 
