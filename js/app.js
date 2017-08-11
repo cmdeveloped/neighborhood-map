@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 // Global variables
   var self = this;
-  var map, infoWindow;
+  var map, infoWindow, marker;
 
 
 // Creating our Knckout Model
@@ -15,7 +15,7 @@ $(document).ready(function() {
 
     var self = this;
 
-    var infoWindow = new google.maps.InfoWindow();
+    infoWindow = new google.maps.InfoWindow();
 
     self.allVenues = ko.observableArray();
     self.filteredVenues = ko.observableArray();
@@ -38,10 +38,7 @@ $(document).ready(function() {
 
   // Populate the marker of the Venue selected from the list
     self.populateInfoFromItem = function(item) {
-      var marker = self.markers().find((mk) => {
-        return mk.title === item.name;
-      });
-      populateInfoWindow(marker, infoWindow);
+      google.maps.event.trigger(item.marker, 'click');
     };
 
   };
@@ -130,6 +127,11 @@ $(document).ready(function() {
       });
   };
 
+// Map error function
+  function mapError() {
+    alert("Map failed to load properly. Please reload and try again.");
+  }
+
 
 //  Set  up our map markers and extend bounds
   function initMap(init, markers, infoWindow) {
@@ -145,7 +147,6 @@ $(document).ready(function() {
   // Variables to create styled markers and extend map bounds
     var bounds = new google.maps.LatLngBounds();
     var defaultIcon = makeDefaultIcon();
-    var focusIcon = makeFocusIcon();
 
   // Loop through the model and set Marker properties and info window content
     for (var i = 0; i < Model.length; i++) {
@@ -154,7 +155,7 @@ $(document).ready(function() {
       var address = Model[i].address;
       var phone = Model[i].phone;
       var rating = Model[i].rating;
-      var marker = new google.maps.Marker({
+      marker = new google.maps.Marker({
         title: name,
         position: latlng,
         map: map,
@@ -164,16 +165,9 @@ $(document).ready(function() {
       });
       bounds.extend(Model[i].position);
       markers.push(marker);
+      Model[i].marker = marker;
       // Add event listeners for when markers are either clicked or focused on
-        marker.addListener('click', function() {
-          populateInfoWindow(this, infoWindow);
-        });
-        marker.addListener('mouseover', function() {
-          this.setIcon(focusIcon);
-        });
-        marker.addListener('mouseout', function() {
-          this.setIcon(defaultIcon);
-        });
+      marker.addListener('click', populateInfoWindow);
       map.fitBounds(bounds);
     }
   }
@@ -200,16 +194,25 @@ $(document).ready(function() {
   }
 
   // Function populates the infowindow for when a marker on the map is interacted
-  function populateInfoWindow(marker, infowindow) {
+  function populateInfoWindow() {
+    var marker = this;
+    var infowindow = infoWindow;
+    var focusIcon = makeFocusIcon();
+    var defaultIcon = makeDefaultIcon();
+
     infowindow.marker = null;
     if (infowindow.marker != marker) {
       infowindow.marker = marker;
       infowindow.setContent(marker.content);
       infowindow.open(map, marker);
+      marker.setIcon(focusIcon);
       infowindow.addListener('closeclick', function() {
+        marker.setIcon(defaultIcon);
         infowindow.marker = null;
       });
     }
+    // Set marker back to default after 3 seconds
+    setTimeout(function() { marker.setIcon(defaultIcon)}, 3000);
   }
 
 
