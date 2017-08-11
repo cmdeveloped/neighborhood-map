@@ -127,6 +127,11 @@ $(document).ready(function() {
       });
   };
 
+// Map error function
+  function mapError() {
+    alert("Map failed to load properly. Please reload and try again.");
+  }
+
 
 //  Set  up our map markers and extend bounds
   function initMap(init, markers, infoWindow) {
@@ -193,22 +198,17 @@ $(document).ready(function() {
     var marker = this;
     var infowindow = infoWindow;
     var focusIcon = makeFocusIcon();
+    var defaultIcon = makeDefaultIcon();
 
     infowindow.marker = null;
     if (infowindow.marker != marker) {
       infowindow.marker = marker;
       infowindow.setContent(marker.content);
       infowindow.open(map, marker);
+      marker.setIcon(focusIcon);
       infowindow.addListener('closeclick', function() {
         infowindow.marker = null;
       });
-    }
-
-    if (marker.getAnimation() != null) {
-      marker.setAnimation(null);
-    } else {
-      marker.setAnimation(google.maps.Animation.BOUNCE);
-      marker.setIcon(focusIcon);
     }
   }
 
