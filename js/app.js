@@ -107,7 +107,7 @@ var updateMap = function(foodChoice, allVenues, init, infoWindow) {
                 marker: marker
             });
         }
-        
+
         Model = Model.sort(function(a, b) {
             return a.name > b.name ? 1 : -1;
         });
@@ -180,6 +180,6 @@ function populateInfoWindow() {
     }
     // Set marker back to default after 3 seconds
     setTimeout(function() {
-        marker.setIcon(defaultIcon)
+        marker.setIcon(defaultIcon);
     }, 3000);
 }
