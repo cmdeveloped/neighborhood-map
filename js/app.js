@@ -61,7 +61,7 @@ var updateMap = function(foodChoice, allVenues, init, infoWindow) {
     var client_id = 'NLIDKGASYMRAYLQE0CTQ3G2HRTWOV1CR1RIBMQF4YJMINVSP';
     var client_secret = 'UK1CHDNC5EE35T3YLHMJDI3IEXAGSMADSR35BAOK3HXULCAU';
     var base_url = 'https://api.foursquare.com/v2/';
-    var endpoint = 'venues/explore?&near=200+Resource+Parkway+Franklin+TN&query=' + foodChoice() + '&limit=20';
+    var endpoint = 'venues/explore?&origin=*&near=200+Resource+Parkway+Franklin+TN&query=' + foodChoice() + '&limit=20';
     var key = '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=' + '20170704';
     var url = base_url + endpoint + key;
 
